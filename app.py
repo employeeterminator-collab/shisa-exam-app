@@ -4,9 +4,10 @@ from google.oauth2.service_account import Credentials
 import streamlit as st
 
 st.title("Shisa Kanko Examination Portal")
-st.subheader("Voucher Validation and Registration Test")
+st.subheader("Candidate Identity Verification & Registration")
 
-# 建立 Google Sheets 連線函式
+
+# Connect to Google Sheets
 @st.cache_resource
 def get_google_sheet():
   creds_dict = dict(st.secrets["gcp_service_account"])
@@ -19,51 +20,138 @@ def get_google_sheet():
   return client.open("ShisaKanko_Exam_Database")
 
 
+# Initialize session state variables
+if "verified" not in st.session_state:
+  st.session_state.verified = False
+if "user_email" not in st.session_state:
+  st.session_state.user_email = ""
+if "english_name" not in st.session_state:
+  st.session_state.english_name = ""
+if "japanese_name" not in st.session_state:
+  st.session_state.japanese_name = ""
+if "voucher_code" not in st.session_state:
+  st.session_state.voucher_code = ""
+
 try:
   sh = get_google_sheet()
   worksheet = sh.worksheet("Vouchers")
 
-  # 建立一個簡單的輸入表單
-  with st.form("voucher_form"):
-    user_email = st.text_input("Please fill in your email address")
-    voucher_input = st.text_input("Please fill in Voucher Code)")
-    submit_button = st.form_submit_button("Validate Voucher")
+  if not st.session_state.verified:
+    st.markdown("### Step 1: Real-time Voucher Verification")
+    voucher_input = st.text_input(
+        "Enter your Examination Voucher Code"
+    ).strip()
 
-  if submit_button:
-    if not user_email or not voucher_input:
-      st.warning("Please fill in your Email and Voucher Code。")
-    else:
-      # 取得所有紀錄以尋找對應的 Voucher
+    if voucher_input:
       records = worksheet.get_all_records()
-      row_index = None
-      matched_row = None
+      matched_record = None
+      r_index = None
 
-      # 尋找對應的 Voucher (從第 2 列開始算，因為 row 1 是標題，所以 index 要 +2)
       for idx, record in enumerate(records):
-        if str(record.get("VoucherCode")).strip() == voucher_input.strip():
-          row_index = idx + 2
-          matched_row = record
+        if str(record.get("VoucherCode")).strip() == voucher_input:
+          r_index = idx + 2
+          matched_record = record
           break
 
-      if not matched_row:
-        st.error("Voucher not found. Please confirm and re-enter。")
-      elif matched_row.get("Status") != "Active":
+      if not matched_record:
         st.error(
-            "This voucher has been used or expired and cannot be reused!"
+            "❌ Invalid Voucher Code. Please check and re-enter your code."
+        )
+      elif matched_record.get("Status") != "Active":
+        st.error(
+            "⚠️ This Voucher has already been used or is inactive and cannot be"
+            " reused!"
         )
       else:
-        # 驗證成功！更新 Google Sheet 狀態為 Used，並寫入 Email 與時間
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        # 更新 Status (Col B), AssignedEmail (Col C), UsedTime (Col D)
-        worksheet.update_cell(row_index, 2, "Used")
-        worksheet.update_cell(row_index, 3, user_email)
-        worksheet.update_cell(row_index, 4, now_str)
-
         st.success(
-            f"Voucher verification successful! Successfully bound to {user_email}, proceeding to the next exam interface."
+            "✅ Valid Voucher! Please complete your candidate details below to"
+            " proceed."
         )
-        # 這裡未來可以透過 st.session_state 進入下一步
+
+        st.markdown("---")
+        st.markdown("### Step 2: Candidate Information")
+
+        email_1 = st.text_input("Email Address")
+        email_2 = st.text_input("Confirm Email Address")
+
+        col1, col2 = st.columns([3, 1])
+        with col1:
+          english_name = st.text_input(
+              "Full Name (as per ID/Passport)"
+          )
+        with col2:
+          st.write("")
+          st.write("")
+          translate_btn = st.button("🇯🇵 Katakana Helper")
+
+        if "jp_name_temp" not in st.session_state:
+          st.session_state.jp_name_temp = ""
+
+        if translate_btn and english_name:
+          st.session_state.jp_name_temp = (
+              f"[{english_name} - Katakana equivalent placeholder]"
+          )
+
+        japanese_name_input = st.text_input(
+            "Japanese Name / Katakana (Editable for certificate display)",
+            value=st.session_state.jp_name_temp,
+        )
+
+        st.markdown("---")
+
+        confirm_checkbox = st.checkbox(
+            "I confirm that the email and name provided above are correct."
+            " Note: Data cannot be changed after submission!"
+        )
+
+        if st.button("🚀 Confirm and Lock Voucher to Enter Exam"):
+          if not email_1 or not email_2 or not english_name:
+            st.warning("Please fill in all required fields.")
+          elif email_1 != email_2:
+            st.error("❌ Email addresses do not match. Please check again!")
+          elif not confirm_checkbox:
+            st.warning(
+                "⚠️ Please check the confirmation box acknowledging that data"
+                " cannot be changed after submission."
+            )
+          else:
+            now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+            # Update Google Sheet cells
+            worksheet.update_cell(r_index, 2, "Used")  # Status -> Col B
+            worksheet.update_cell(r_index, 3, email_1)  # AssignedEmail -> Col C
+            worksheet.update_cell(r_index, 4, now_str)  # UsedTime -> Col D
+            worksheet.update_cell(
+                r_index, 6, english_name
+            )  # EnglishName -> Col F
+            worksheet.update_cell(
+                r_index, 7, japanese_name_input
+            )  # JapaneseName -> Col G
+
+            st.session_state.verified = True
+            st.session_state.user_email = email_1
+            st.session_state.english_name = english_name
+            st.session_state.japanese_name = japanese_name_input
+            st.session_state.voucher_code = voucher_input
+
+            st.success(
+                "🎉 Verification & Registration Successful! Voucher has been"
+                " locked."
+            )
+            st.rerun()
+
+  else:
+    st.success(
+        f"Welcome Candidate: **{st.session_state.english_name}**"
+        f" ({st.session_state.user_email})"
+    )
+    st.info(
+        "📌 Your Voucher is successfully locked. Ready to proceed to the"
+        " examination modules."
+    )
+
+    if st.button("Start Examination (Proceed to Next Stage)"):
+      st.balloons()
 
 except Exception as e:
-  st.error(f"系統連線或讀取發生錯誤：{e}")
+  st.error(f"System connection or processing error: {e}")
