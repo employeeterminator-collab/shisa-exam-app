@@ -155,3 +155,5 @@ try:
 
 except Exception as e:
   st.error(f"System connection or processing error: {e}")
+except Exception as e:
+  st.error(f"System connection or processing error: {e}")
