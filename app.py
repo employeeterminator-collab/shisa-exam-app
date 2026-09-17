@@ -77,16 +77,21 @@ try:
         with col_en2:
           english_last_name = st.text_input("English Last Name")
 
-        st.markdown(
-            "#### Japanese Name (Katakana / Kanji — Family Name first)"
-        )
-        col_jp1, col_jp2 = st.columns(2)
-        with col_jp1:
-          japanese_last_name = st.text_input("Japanese Last Name (Family Name)")
-        with col_jp2:
-          japanese_first_name = st.text_input(
-              "Japanese First Name (Given Name)"
+        # Japanese Name Section with Help Button
+        col_jp_label, col_jp_btn = st.columns([2, 1])
+        with col_jp_label:
+          st.markdown("#### Japanese Name")
+        with col_jp_btn:
+          st.write("")  # Alignment spacer
+          st.link_button(
+              "Help with Japanese Name",
+              "https://exam1.shisakanko.org/Converter.html",
+              use_container_width=True,
           )
+
+        japanese_name = st.text_input(
+            "Japanese Name (Katakana / Kanji — Family Name first)"
+        )
 
         st.markdown("---")
 
@@ -104,7 +109,10 @@ try:
           ):
             st.warning("Please fill in all required email and English name fields.")
           elif email_1 != email_2:
-            st.error("❌ Email addresses do not match. Please check again!")
+            st.error(
+                "❌ Error: Both email addresses do not match. Please check"
+                " again!"
+            )
           elif not confirm_checkbox:
             st.warning(
                 "⚠️ Please check the confirmation box acknowledging that data"
@@ -114,15 +122,13 @@ try:
             now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
             # Update Google Sheet cells (Mapping:
-            # Col F: EnglishFirstName, Col G: EnglishLastName,
-            # Col H: JapaneseLastName, Col I: JapaneseFirstName)
+            # Col F: EnglishFirstName, Col G: EnglishLastName, Col H: JapaneseName)
             worksheet.update_cell(r_index, 2, "Used")  # Status -> Col B
             worksheet.update_cell(r_index, 3, email_1)  # AssignedEmail -> Col C
             worksheet.update_cell(r_index, 4, now_str)  # UsedTime -> Col D
             worksheet.update_cell(r_index, 6, english_first_name)  # Col F
             worksheet.update_cell(r_index, 7, english_last_name)  # Col G
-            worksheet.update_cell(r_index, 8, japanese_last_name)  # Col H
-            worksheet.update_cell(r_index, 9, japanese_first_name)  # Col I
+            worksheet.update_cell(r_index, 8, japanese_name)  # Col H
 
             st.session_state.verified = True
             st.session_state.user_email = email_1
