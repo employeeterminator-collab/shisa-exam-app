@@ -19,7 +19,7 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-st.title("Shisa Kanko-Shi (Certified Pointing-and-Calling Specialist) Examination Portal")
+st.title("Shisa Kanko-Shi /n (Certified Pointing-and-Calling Specialist) /n Examination Portal")
 st.subheader("Candidate Identity Verification & Registration")
 
 
