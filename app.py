@@ -3,6 +3,18 @@ import gspread
 from google.oauth2.service_account import Credentials
 import streamlit as st
 
+# 隱藏 Streamlit 預設的 Menu、Footer 與 Header
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+
+
 st.title("Shisa Kanko Examination Portal")
 st.subheader("Candidate Identity Verification & Registration")
 
