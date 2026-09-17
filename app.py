@@ -21,7 +21,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 st.title("Shisa Kanko-Shi")
 st.subheader("(Certified Pointing-and-Calling Specialist)") 
-st.title("Examination Portal")
+st.title("Examination Registration Portal")
 st.subheader("Candidate Identity Verification & Registration")
 
 
