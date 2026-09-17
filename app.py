@@ -3,17 +3,18 @@ import gspread
 from google.oauth2.service_account import Credentials
 import streamlit as st
 
-# Hide Streamlit menu, header, footer, and the floating viewer badge
+# Hide Streamlit menu, header, footer, toolbar, and floating branding badge
 hide_streamlit_style = """
     <style>
     #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
     footer {visibility: hidden;}
-    [data-testid="stToolbar"] {visibility: hidden; display: none !important;}
-    [data-testid="stDecoration"] {visibility: hidden; display: none !important;}
-    [data-testid="stStatusWidget"] {visibility: hidden; display: none !important;}
-    div[class*="viewerBadge"] {visibility: hidden; display: none !important;}
-    .viewerBadge_container {visibility: hidden; display: none !important;}
+    [data-testid="stToolbar"] {display: none !important; visibility: hidden !important;}
+    [data-testid="stDecoration"] {display: none !important; visibility: hidden !important;}
+    [data-testid="stStatusWidget"] {display: none !important; visibility: hidden !important;}
+    .viewerBadge_container__1QSob {display: none !important; visibility: hidden !important;}
+    div[class*="viewerBadge"] {display: none !important; visibility: hidden !important;}
+    .stDeployButton {display: none !important; visibility: hidden !important;}
     </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
