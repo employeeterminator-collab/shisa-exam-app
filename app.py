@@ -25,10 +25,6 @@ if "verified" not in st.session_state:
   st.session_state.verified = False
 if "user_email" not in st.session_state:
   st.session_state.user_email = ""
-if "english_name" not in st.session_state:
-  st.session_state.english_name = ""
-if "japanese_name" not in st.session_state:
-  st.session_state.japanese_name = ""
 if "voucher_code" not in st.session_state:
   st.session_state.voucher_code = ""
 
@@ -74,39 +70,39 @@ try:
         email_1 = st.text_input("Email Address")
         email_2 = st.text_input("Confirm Email Address")
 
-        col1, col2 = st.columns([3, 1])
-        with col1:
-          english_name = st.text_input(
-              "Full Name (as per ID/Passport)"
-          )
-        with col2:
-          st.write("")
-          st.write("")
-          translate_btn = st.button("🇯🇵 Katakana Helper")
+        st.markdown("#### English Name (as per ID/Passport)")
+        col_en1, col_en2 = st.columns(2)
+        with col_en1:
+          english_first_name = st.text_input("English First Name")
+        with col_en2:
+          english_last_name = st.text_input("English Last Name")
 
-        if "jp_name_temp" not in st.session_state:
-          st.session_state.jp_name_temp = ""
-
-        if translate_btn and english_name:
-          st.session_state.jp_name_temp = (
-              f"[{english_name} - Katakana equivalent placeholder]"
-          )
-
-        japanese_name_input = st.text_input(
-            "Japanese Name / Katakana (Editable for certificate display)",
-            value=st.session_state.jp_name_temp,
+        st.markdown(
+            "#### Japanese Name (Katakana / Kanji — Family Name first)"
         )
+        col_jp1, col_jp2 = st.columns(2)
+        with col_jp1:
+          japanese_last_name = st.text_input("Japanese Last Name (Family Name)")
+        with col_jp2:
+          japanese_first_name = st.text_input(
+              "Japanese First Name (Given Name)"
+          )
 
         st.markdown("---")
 
         confirm_checkbox = st.checkbox(
-            "I confirm that the email and name provided above are correct."
+            "I confirm that the email and names provided above are correct."
             " Note: Data cannot be changed after submission!"
         )
 
-        if st.button("🚀 Confirm and Lock Voucher to Enter Exam"):
-          if not email_1 or not email_2 or not english_name:
-            st.warning("Please fill in all required fields.")
+        if st.button("🚀 Confirm and Lock Voucher"):
+          if (
+              not email_1
+              or not email_2
+              or not english_first_name
+              or not english_last_name
+          ):
+            st.warning("Please fill in all required email and English name fields.")
           elif email_1 != email_2:
             st.error("❌ Email addresses do not match. Please check again!")
           elif not confirm_checkbox:
@@ -117,43 +113,44 @@ try:
           else:
             now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-            # Update Google Sheet cells
+            # Update Google Sheet cells (Mapping:
+            # Col F: EnglishFirstName, Col G: EnglishLastName,
+            # Col H: JapaneseLastName, Col I: JapaneseFirstName)
             worksheet.update_cell(r_index, 2, "Used")  # Status -> Col B
             worksheet.update_cell(r_index, 3, email_1)  # AssignedEmail -> Col C
             worksheet.update_cell(r_index, 4, now_str)  # UsedTime -> Col D
-            worksheet.update_cell(
-                r_index, 6, english_name
-            )  # EnglishName -> Col F
-            worksheet.update_cell(
-                r_index, 7, japanese_name_input
-            )  # JapaneseName -> Col G
+            worksheet.update_cell(r_index, 6, english_first_name)  # Col F
+            worksheet.update_cell(r_index, 7, english_last_name)  # Col G
+            worksheet.update_cell(r_index, 8, japanese_last_name)  # Col H
+            worksheet.update_cell(r_index, 9, japanese_first_name)  # Col I
 
             st.session_state.verified = True
             st.session_state.user_email = email_1
-            st.session_state.english_name = english_name
-            st.session_state.japanese_name = japanese_name_input
             st.session_state.voucher_code = voucher_input
 
             st.success(
-                "🎉 Verification & Registration Successful! Voucher has been"
-                " locked."
+                "🎉 Registration Successful! Voucher has been locked."
             )
             st.rerun()
 
   else:
-    st.success(
-        f"Welcome Candidate: **{st.session_state.english_name}**"
-        f" ({st.session_state.user_email})"
+    # Post-verification screen layout
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown(
+        "<h3 style='text-align: center;'>Exam Voucher has been validated and"
+        " registered. You will need your email address and voucher to launch"
+        " your exam.</h3>",
+        unsafe_allow_html=True,
     )
-    st.info(
-        "📌 Your Voucher is successfully locked. Ready to proceed to the"
-        " examination modules."
-    )
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    if st.button("Start Examination (Proceed to Next Stage)"):
-      st.balloons()
+    col_c1, col_c2, col_c3 = st.columns([1, 2, 1])
+    with col_c2:
+      st.link_button(
+          "Return to Shisa Kanko Promotion Institute",
+          "https://shisakanko.org",
+          use_container_width=True,
+      )
 
-except Exception as e:
-  st.error(f"System connection or processing error: {e}")
 except Exception as e:
   st.error(f"System connection or processing error: {e}")
