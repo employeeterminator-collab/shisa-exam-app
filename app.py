@@ -9,10 +9,8 @@ hide_streamlit_style = """
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    .stAppViewContainer > section:nth-child(even) {background-color: transparent;}
     div[data-testid="stStatusWidget"] {visibility: hidden; display: none;}
     footer[data-testid="stFooter"] {visibility: hidden; display: none;}
-    .viewerBadge_container__1QSob {visibility: hidden; display: none;}
     #stDecoration {display: none;}
     </style>
 """
