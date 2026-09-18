@@ -17,10 +17,9 @@ hide_streamlit_style = """
     .stDeployButton {display: none !important; visibility: hidden !important;}
     </style>
 """
-st.markdown("<style>h1 { text-align: center; }</style>", unsafe_allow_html=True)
-
- 
+st.markdown("<style>h1 { text-align: center; }</style>", unsafe_allow_html=True) 
 st.title("Shisa Kanko-Shi\u2122")
+st.markdown("<style>h2 { text-align: center; }</style>", unsafe_allow_html=True)
 st.subheader("(Certified Pointing-and-Calling Specialist)") 
 st.title("Examination Registration Portal")
 st.subheader("Candidate Identity Verification & Registration")
