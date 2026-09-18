@@ -122,6 +122,7 @@ try:
         )
     
         if st.button("🚀 Confirm and Lock Voucher"):
+            st.markdown("<br><br>", unsafe_allow_html=True)
           if (
               not email_1
               or not email_2
