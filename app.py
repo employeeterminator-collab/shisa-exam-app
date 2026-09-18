@@ -120,7 +120,7 @@ try:
             "I confirm that the email and names provided above are correct."
             " Note: Data cannot be changed after submission!"
         )
-
+    st.markdown("<div style='margin-bottom: 30px;'></div>", unsafe_allow_html=True)
         if st.button("🚀 Confirm and Lock Voucher"):
           if (
               not email_1
