@@ -160,7 +160,7 @@ try:
                 "🎉 Registration Successful! Voucher has been locked."
             )
             st.rerun()
-
+        st.markdown("---")
   else:
     # Post-verification screen layout
     st.markdown("<br><br>", unsafe_allow_html=True)
