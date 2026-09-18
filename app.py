@@ -85,7 +85,8 @@ try:
         )
 
         st.markdown("---")
-        st.markdown("### Step 2: Candidate Information")
+        st.markdown( "<h3 style='text-align: left;'>Step 2: Candidate Information</h3>", unsafe_allow_html=True,)
+      
 
         email_1 = st.text_input("Email Address")
         email_2 = st.text_input("Confirm Email Address")
