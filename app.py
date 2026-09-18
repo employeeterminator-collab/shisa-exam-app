@@ -23,7 +23,7 @@ st.markdown("<style>h3 { text-align: center; }</style>", unsafe_allow_html=True)
 st.subheader("(Certified Pointing-and-Calling Specialist)") 
 st.title("Examination Registration Portal")
 st.subheader("Candidate Identity Verification & Registration")
-
+st.markdown("---")
 
 # Connect to Google Sheets
 @st.cache_resource
