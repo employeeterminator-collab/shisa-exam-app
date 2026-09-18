@@ -17,10 +17,9 @@ hide_streamlit_style = """
     .stDeployButton {display: none !important; visibility: hidden !important;}
     </style>
 """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+st.markdown("<style>h1 { text-align: center; }</style>", unsafe_allow_html=True)
 
-col, col2, col3 =st.columns([1,2,1])
-with col2:
+ 
 st.title("Shisa Kanko-Shi\u2122")
 st.subheader("(Certified Pointing-and-Calling Specialist)") 
 st.title("Examination Registration Portal")
