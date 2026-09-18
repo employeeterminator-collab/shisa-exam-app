@@ -155,12 +155,12 @@ try:
             st.session_state.verified = True
             st.session_state.user_email = email_1
             st.session_state.voucher_code = voucher_input
-
+            st.markdown("<br><br>", unsafe_allow_html=True)
             st.success(
                 "🎉 Registration Successful! Voucher has been locked."
             )
             st.rerun()
-st.markdown("<br><br>", unsafe_allow_html=True)
+
   else:
     # Post-verification screen layout
     st.markdown("<br><br>", unsafe_allow_html=True)
