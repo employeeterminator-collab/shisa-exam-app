@@ -51,7 +51,10 @@ try:
   worksheet = sh.worksheet("Vouchers")
 
   if not st.session_state.verified:
-    st.markdown("### Step 1: Real-time Voucher Verification")
+   st.markdown(
+    "<h3 style='text-align: left;'>Step 1: Real-time Voucher Verification</h3>",
+    unsafe_allow_html=True,
+   ## st.markdown("### Step 1: Real-time Voucher Verification")
     voucher_input = st.text_input(
         "Enter your Examination Voucher Code"
     ).strip()
