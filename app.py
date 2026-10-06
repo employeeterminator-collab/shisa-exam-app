@@ -101,9 +101,9 @@ try:
         st.markdown("#### English Name (as per ID/Passport)")
         col_en1, col_en2 = st.columns(2)
         with col_en1:
-          english_first_name = st.text_input("English First Name"), max_chars=20)
+          english_first_name = st.text_input("English First Name", max_chars=15)
         with col_en2:
-          english_last_name = st.text_input("English Last Name"), max_chars=15)
+          english_last_name = st.text_input("English Last Name", max_chars=12)
 
         # Japanese Name Section with Help Button
         col_jp_label, col_jp_btn = st.columns([2, 1])
