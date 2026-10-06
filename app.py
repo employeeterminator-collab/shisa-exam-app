@@ -103,7 +103,7 @@ try:
         with col_en1:
           english_first_name = st.text_input("English First Name"), max_chars=20)
         with col_en2:
-          english_last_name = st.text_input("English Last Name"), max_chars_15)
+          english_last_name = st.text_input("English Last Name"), max_chars=15)
 
         # Japanese Name Section with Help Button
         col_jp_label, col_jp_btn = st.columns([2, 1])
