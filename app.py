@@ -1,3 +1,5 @@
+import json
+import os
 from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
@@ -35,15 +37,22 @@ st.markdown("---")
 # Connect to Google Sheets
 @st.cache_resource
 def get_google_sheet():
-  creds_dict = dict(st.secrets["gcp_service_account"])
-  scopes = [
-      "https://www.googleapis.com/auth/spreadsheets",
-      "https://www.googleapis.com/auth/drive",
-  ]
-  creds = Credentials.from_service_account_info(creds_dict, scopes=scopes)
-  client = gspread.authorize(creds)
-  return client.open("ShisaKanko_Exam_Database")
-
+    # Load credentials from Cloud Run environment variables
+    scope = [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive",
+    ]
+    
+    # Option A: If your env var contains the full JSON string
+    service_account_info = json.loads(os.getenv("GCP_SERVICE_ACCOUNT"))
+    creds = Credentials.from_service_account_info(
+        service_account_info, scopes=scope
+    )
+    client = gspread.authorize(creds)
+    
+    # Open sheet using environment variable
+    spreadsheet_id = os.getenv("SPREADSHEET_ID")
+    sheet = client.open_by_key(spreadsheet_id).sheet1
 
 # Initialize session state variables
 if "verified" not in st.session_state:
