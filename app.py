@@ -54,11 +54,10 @@ def get_google_sheet():
       if not spreadsheet_id:
         st.error("Missing SPREADSHEET_ID environment variable.")
         st.stop()
-
-        sheet = client.open_by_key(spreadsheet_id).sheet1
-except Exception as e:
-  st.error(f"Failed to connect to Google Sheets: {e}")
-  st.stop()
+      sheet = client.open_by_key(spreadsheet_id).sheet1
+    except Exception as e:
+      st.error(f"Failed to connect to Google Sheets: {e}")
+      st.stop()
 
 # Initialize session state variables
 if "verified" not in st.session_state:
