@@ -49,14 +49,15 @@ def get_google_sheet():
           service_account_info, scopes=scope
       )
       client = gspread.authorize(creds)
-    
+
       spreadsheet_id = os.getenv("SPREADSHEET_ID")
       if not spreadsheet_id:
         st.error("Missing SPREADSHEET_ID environment variable.")
         st.stop()
+
       sheet = client.open_by_key(spreadsheet_id).sheet1
     except Exception as e:
-      st.error(f"Failed to connect to Google Sheets: {e}")
+      st.error(f"Connection error: {e}")
       st.stop()
 
 # Initialize session state variables
