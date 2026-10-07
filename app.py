@@ -55,7 +55,7 @@ def get_google_sheet():
         st.error("Missing SPREADSHEET_ID environment variable.")
         st.stop()
 
-sheet = client.open_by_key(spreadsheet_id).sheet1
+        sheet = client.open_by_key(spreadsheet_id).sheet1
 except Exception as e:
   st.error(f"Failed to connect to Google Sheets: {e}")
   st.stop()
