@@ -37,28 +37,27 @@ st.markdown("---")
 # Connect to Google Sheets
 @st.cache_resource
 def get_google_sheet():
-    # Load credentials from Cloud Run environment variables
-    scope = [
-        "https://www.googleapis.com/auth/spreadsheets",
-        "https://www.googleapis.com/auth/drive",
-    ]
-    
-    try:
-      service_account_info = json.loads(os.getenv("GCP_SERVICE_ACCOUNT"))
-      creds = Credentials.from_service_account_info(
-          service_account_info, scopes=scope
-      )
-      client = gspread.authorize(creds)
+  scope = [
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/drive",
+  ]
+  try:
+    service_account_info = json.loads(os.getenv("GCP_SERVICE_ACCOUNT"))
+    creds = Credentials.from_service_account_info(
+        service_account_info, scopes=scope
+    )
+    client = gspread.authorize(creds)
 
-      spreadsheet_id = os.getenv("SPREADSHEET_ID")
-      if not spreadsheet_id:
-        st.error("Missing SPREADSHEET_ID environment variable.")
-        st.stop()
-
-      sheet = client.open_by_key(spreadsheet_id).sheet1
-    except Exception as e:
-      st.error(f"Connection error: {e}")
+    spreadsheet_id = os.getenv("SPREADSHEET_ID")
+    if not spreadsheet_id:
+      st.error("Missing SPREADSHEET_ID environment variable.")
       st.stop()
+
+    # Return the spreadsheet object so sh is not None
+    return client.open_by_key(spreadsheet_id)
+  except Exception as e:
+    st.error(f"Connection error: {e}")
+    st.stop()
 
 # Initialize session state variables
 if "verified" not in st.session_state:
