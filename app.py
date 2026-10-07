@@ -43,16 +43,22 @@ def get_google_sheet():
         "https://www.googleapis.com/auth/drive",
     ]
     
-    # Option A: If your env var contains the full JSON string
-    service_account_info = json.loads(os.getenv("GCP_SERVICE_ACCOUNT"))
-    creds = Credentials.from_service_account_info(
-        service_account_info, scopes=scope
-    )
-    client = gspread.authorize(creds)
+    try:
+      service_account_info = json.loads(os.getenv("GCP_SERVICE_ACCOUNT"))
+      creds = Credentials.from_service_account_info(
+          service_account_info, scopes=scope
+      )
+      client = gspread.authorize(creds)
     
-    # Open sheet using environment variable
-    spreadsheet_id = os.getenv("SPREADSHEET_ID")
-    sheet = client.open_by_key(spreadsheet_id).sheet1
+      spreadsheet_id = os.getenv("SPREADSHEET_ID")
+      if not spreadsheet_id:
+        st.error("Missing SPREADSHEET_ID environment variable.")
+        st.stop()
+
+  sheet = client.open_by_key(spreadsheet_id).sheet1
+except Exception as e:
+  st.error(f"Failed to connect to Google Sheets: {e}")
+  st.stop()
 
 # Initialize session state variables
 if "verified" not in st.session_state:
