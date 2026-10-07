@@ -41,6 +41,7 @@ def get_google_sheet():
       "https://www.googleapis.com/auth/spreadsheets",
       "https://www.googleapis.com/auth/drive",
   ]
+
   try:
     service_account_info = json.loads(os.getenv("GCP_SERVICE_ACCOUNT"))
     creds = Credentials.from_service_account_info(
