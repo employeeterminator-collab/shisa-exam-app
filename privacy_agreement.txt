@@ -1,6 +1,5 @@
-SHISA KANKO-SHI EXAMINATION REGISTRATION PORTAL
-PRIVACY AGREEMENT AND DATA COLLECTION NOTICE (2026)
-
+SHISA KANKO-SHI EXAMINATION REGISTRATION PORTAL v1
+PRIVACY AGREEMENT AND DATA COLLECTION NOTICE 
 1. INTRODUCTION AND SCOPE
 This Privacy Agreement and Data Collection Notice ("Agreement") governs the collection, use, and protection of personal information by the Shisa Kanko Promotion Institute ("we," "us," or "our") through our examination portal.
 
