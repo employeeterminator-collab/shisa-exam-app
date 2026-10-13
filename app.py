@@ -78,49 +78,14 @@ st.components.v1.html(
 )
 
 # 隱藏 Streamlit 預設選單、頁尾與標題的錨點連結符號
-PRIVACY_AGREEMENT_TEXT = """
-**PRIVACY AGREEMENT AND DATA COLLECTION NOTICE**
-
-**1. INTRODUCTION AND SCOPE**
-This Privacy Agreement and Data Collection Notice ("Agreement") governs the collection, use, and protection of personal information by the Shisa Kanko Promotion Institute ("we," "us," or "our") through our examination portal.
-
-This Agreement applies to all candidates and users ("you" or "your") registering for or participating in examinations hosted on our portal. It is designed to comply with applicable data protection laws, including the EU General Data Protection Regulation (EU GDPR), the UK General Data Protection Regulation (UK GDPR), the Canadian Personal Information Protection and Electronic Documents Act (PIPEDA), the Canadian Anti-Spam Legislation (CASL), and relevant United States federal and state privacy frameworks (including CCPA/CPRA and the CAN-SPAM Act).
-
-**2. CATEGORIES OF PERSONAL DATA COLLECTED**
-We adhere to the principle of data minimization and only collect personal information directly necessary to manage your registration, administer your examination, and issue credentials:
-- First Name
-- Last Name
-- Japanese Name (for certification formatting)
-- Email Address
-
-**3. PURPOSES OF PROCESSING**
-- **Exam Registration and Account Management** — your name and email, to create and manage your registration.
-- **Exam Administration and Results Delivery** — your name and email, to run the exam and deliver results.
-- **Certification Issuance and Credential Management** — your names, to issue certificates and verify credentials.
-- **Promotional Communications (Optional)** — only if you separately opt in below.
-
-**4. MARKETING AND PROMOTIONAL COMMUNICATIONS**
-Receiving promotional emails is entirely voluntary and separate from exam registration. Registering for or taking an exam does NOT enroll you in marketing communications. You will only receive promotional emails if you tick the optional opt-in box during registration. You may unsubscribe at any time via the "Unsubscribe" link in any marketing email or by contacting exam@shisakanko.org. Opting out does not affect your exams, results, or certifications.
-
-**5. DATA SHARING AND THIRD PARTIES**
-We do not sell, rent, lease, or trade your personal information. We may disclose it only to trusted service providers (e.g. secure cloud hosting, transactional email services) who act on our behalf under strict confidentiality obligations.
-
-**6. INTERNATIONAL DATA TRANSFERS AND SECURITY**
-Your data may be stored or processed outside your country of residence. We apply technical, administrative, and physical safeguards appropriate to the sensitivity of the information.
-
-**7. DATA RETENTION**
-We retain personal information only as long as necessary to fulfil the purposes collected for, including verifying earned certifications, meeting legal obligations, and resolving disputes.
-
-**8. YOUR PRIVACY RIGHTS**
-Depending on your jurisdiction, you may have the right to access/portability, rectification, erasure/deletion, withdrawal of consent, and objection/restriction of processing. To exercise these rights, contact exam@shisakanko.org.
-
-**9. CONTACT**
-Shisa Kanko Promotion Institute — Attn: Privacy Officer
-Email: exam@shisakanko.org
-
-**10. ACKNOWLEDGMENT AND CONSENT**
-By ticking the checkbox below and proceeding with registration, you acknowledge that you have read and understood this Privacy Agreement and agree to the collection and processing of your personal information for exam delivery and certification management.
-"""
+def load_privacy_agreement():
+    """Load the privacy agreement text from privacy_agreement.txt (repo root)."""
+    try:
+        base = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(base, "privacy_agreement.txt"), encoding="utf-8") as f:
+            return f.read()
+    except Exception:
+        return "(Privacy agreement text is currently unavailable. Please contact exam@shisakanko.org.)"
 
 
 hide_streamlit_style = """
@@ -256,14 +221,13 @@ try:
         st.markdown("---")
         st.markdown("<h3 style='text-align: left;'>Step 3: Privacy Agreement</h3>", unsafe_allow_html=True)
 
-        with st.expander("Privacy Agreement and Data Collection Notice (click to read)", expanded=False):
-            st.markdown(PRIVACY_AGREEMENT_TEXT)
-
-        privacy_checkbox = st.checkbox(
-            "I have read and agree to the Privacy Agreement and Data Collection Notice above."
-            " I consent to the collection and processing of my personal information"
-            " for exam delivery and certification management."
+        st.text_area(
+            "Please scroll down to read the full Privacy Agreement and Data Collection Notice:",
+            value=load_privacy_agreement(),
+            height=320,
+            disabled=True,
         )
+
         marketing_checkbox = st.checkbox(
             "Optional: I would like to receive promotional emails about certification products,"
             " training resources, and future courses. I can unsubscribe at any time."
@@ -276,6 +240,11 @@ try:
             " Note: Data cannot be changed after submission!"
         )
         st.markdown("<br><br>", unsafe_allow_html=True)
+        privacy_checkbox = st.checkbox(
+            "I have read and agree to the Privacy Agreement and Data Collection Notice above."
+            " I consent to the collection and processing of my personal information"
+            " for exam delivery and certification management."
+        )
         if st.button("🚀 Confirm and Lock Voucher"):
         
           if (
