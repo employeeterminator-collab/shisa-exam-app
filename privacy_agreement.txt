@@ -19,7 +19,7 @@ We adhere to the principle of data minimization and only collect personal inform
 - Promotional Communications (Optional): only if you separately opt in during registration.
 
 4. MARKETING AND PROMOTIONAL COMMUNICATIONS
-Receiving promotional emails is entirely voluntary and separate from exam registration. Registering for or taking an exam does NOT enroll you in marketing communications. You will only receive promotional emails if you tick the optional opt-in box during registration. You may unsubscribe at any time via the "Unsubscribe" link in any marketing email or by contacting exam@shisakanko.org. Opting out does not affect your exams, results, or certifications.
+Receiving promotional emails is entirely voluntary and separate from exam registration. Registering for or taking an exam does NOT enroll you in marketing communications. You will only receive promotional emails if you tick the optional opt-in box during registration. You may unsubscribe at any time via the "Unsubscribe" link in any marketing email or by contacting info@shisakanko.org. Opting out does not affect your exams, results, or certifications.
 
 5. DATA SHARING AND THIRD PARTIES
 We do not sell, rent, lease, or trade your personal information. We may disclose it only to trusted service providers (e.g. secure cloud hosting, transactional email services) who act on our behalf under strict confidentiality obligations.
@@ -31,7 +31,7 @@ Your data may be stored or processed outside your country of residence. We apply
 We retain personal information only as long as necessary to fulfil the purposes collected for, including verifying earned certifications, meeting legal obligations, and resolving disputes.
 
 8. YOUR PRIVACY RIGHTS
-Depending on your jurisdiction, you may have the right to access/portability, rectification, erasure/deletion, withdrawal of consent, and objection/restriction of processing. To exercise these rights, contact exam@shisakanko.org.
+Depending on your jurisdiction, you may have the right to access/portability, rectification, erasure/deletion, withdrawal of consent, and objection/restriction of processing. To exercise these rights, contact info@shisakanko.org.
 
 9. CONTACT
 Shisa Kanko Promotion Institute - Attn: Privacy Officer
