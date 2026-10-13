@@ -277,6 +277,7 @@ try:
             worksheet.update_cell(r_index, 2, "Used")  # Status -> Col B
             worksheet.update_cell(r_index, 3, email_1)  # AssignedEmail -> Col C
             worksheet.update_cell(r_index, 4, now_str)  # UsedTime -> Col D
+            worksheet.update_cell(r_index, 5, "Yes" if marketing_checkbox else "No")  # MktOptIn -> Col E
             worksheet.update_cell(r_index, 6, english_first_name)  # Col F
             worksheet.update_cell(r_index, 7, english_last_name)  # Col G
             worksheet.update_cell(r_index, 8, japanese_name)  # Col H
