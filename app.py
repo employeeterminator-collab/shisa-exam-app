@@ -261,7 +261,7 @@ try:
             )
           elif not privacy_checkbox:
             st.warning(
-                "Please read and accept the Privacy Agreement and Data Collection"
+                "Please read and accept the Privacy Agreement and Data Collection" 
                 " Notice (Step 3) before proceeding."
             )
           elif not confirm_checkbox:
