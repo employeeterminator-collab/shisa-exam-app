@@ -4,6 +4,7 @@ from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
 import streamlit as st
+import urllib.request
 
 # ==========================================
 # Idle session killer — cost guard (5 min)
@@ -78,14 +79,40 @@ st.components.v1.html(
 )
 
 # 隱藏 Streamlit 預設選單、頁尾與標題的錨點連結符號
+PRIVACY_AGREEMENT_URL = (
+    "https://raw.githubusercontent.com/employeeterminator-collab/"
+    "shisa-exam-app/main/privacy_agreement.txt"
+)
+
+
 def load_privacy_agreement():
-    """Load the privacy agreement text from privacy_agreement.txt (repo root)."""
+    """Load the privacy agreement text.
+
+    Fetches the live version from the repo so edits take effect without a
+    rebuild; falls back to the copy bundled in the image; cached per session.
+    """
+    if "privacy_agreement_text" in st.session_state:
+        return st.session_state.privacy_agreement_text
+    text = ""
     try:
-        base = os.path.dirname(os.path.abspath(__file__))
-        with open(os.path.join(base, "privacy_agreement.txt"), encoding="utf-8") as f:
-            return f.read()
+        req = urllib.request.Request(
+            PRIVACY_AGREEMENT_URL, headers={"User-Agent": "shisa-registration/1.0"}
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            text = resp.read().decode("utf-8")
     except Exception:
-        return "(Privacy agreement text is currently unavailable. Please contact exam@shisakanko.org.)"
+        text = ""
+    if not text.strip():
+        try:
+            base = os.path.dirname(os.path.abspath(__file__))
+            with open(os.path.join(base, "privacy_agreement.txt"), encoding="utf-8") as f:
+                text = f.read()
+        except Exception:
+            text = ""
+    if not text.strip():
+        text = "(Privacy agreement text is currently unavailable. Please contact info@shisakanko.org.)"
+    st.session_state.privacy_agreement_text = text
+    return text
 
 
 hide_streamlit_style = """
